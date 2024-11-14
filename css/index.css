@@ -2927,6 +2927,9 @@ table {
   border-collapse: collapse;
   empty-cells: show;
 }
+table tr:nth-child(even) {
+  background-color: var(--anzhiyu-secondbg);
+}
 table thead {
   background: var(--anzhiyu-secondbg);
 }
@@ -7409,7 +7412,7 @@ body[data-type="link"] #page .page-title {
   margin: 0 4px 0 0;
 }
 #recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap .article-meta-label {
-  display: none;
+  padding-right: 4px;
 }
 #recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap .article-meta-separator {
   margin: 0 6px;
@@ -10281,6 +10284,15 @@ h1.page-title + .tag-cloud-list {
   margin-right: 1rem;
   -webkit-box-shadow: var(--anzhiyu-shadow-border);
   box-shadow: var(--anzhiyu-shadow-border);
+}
+#chatra:not(.chatra--expanded) {
+  visibility: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)" !important;
+  filter: alpha(opacity=0) !important;
+  pointer-events: none;
 }
 #article-container > header {
   height: 0;
