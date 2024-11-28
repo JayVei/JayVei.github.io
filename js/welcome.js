@@ -45,7 +45,7 @@ function showWelcome() {
     if (ip.includes(":")) {
         ip = "<br>好复杂，咱看不懂~(ipv6)";
     }
-    
+
     // 以下的代码需要根据新API返回的结果进行相应的调整
     switch (ipLocation.data.country) {
         case "日本":
