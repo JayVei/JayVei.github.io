@@ -1,18 +1,12 @@
-// 进行 fetch 请求
-fetch('https://api.nsmao.net/api/ip/query?key=yP1U9KfDPW5EtKwYQPv95qqD81') // 申请地址：https://api.nsmao.net
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
+//get请求
+fetch('https://api.qjqq.cn/api/Local')
+    .then(response => response.json())
     .then(data => {
         ipLocation = data;
-        if (isHomePage()) {
-            showWelcome();
-        }
+        showWelcome();
     })
     .catch(error => console.error('Error:', error));
+
 
 function getDistance(e1, n1, e2, n2) {
     const R = 6371;
@@ -31,20 +25,11 @@ function getDistance(e1, n1, e2, n2) {
 }
 
 function showWelcome() {
-    if (!ipLocation || !ipLocation.data) {
-        console.error('ipLocation data is not available.');
-        return;
-    }
 
-    let dist = getDistance(103.7943084, 25.4936418, ipLocation.data.lng, ipLocation.data.lat); // 修改自己的经度（121.413921）纬度（31.089290）
+    let dist = getDistance(103.7943084, 25.4936418, ipLocation.data.lng, ipLocation.data.lat); //修改自己的经度（121.413921）纬度（31.089290）
     let pos = ipLocation.data.country;
     let ip = ipLocation.ip;
     let posdesc;
-
-    // 新增ipv6显示为指定内容
-    if (ip.includes(":")) {
-        ip = "<br>好复杂，咱看不懂~(ipv6)";
-    }
 
     // 以下的代码需要根据新API返回的结果进行相应的调整
     switch (ipLocation.data.country) {
@@ -116,22 +101,12 @@ function showWelcome() {
                     }
                     break;
                 case "浙江省":
-                    switch (ipLocation.data.city) {
-                        case "杭州市":
-                            posdesc = "东风渐绿西湖柳，雁已还人未南归";
-                            break;
-                        default:
-                            posdesc = "望海楼明照曙霞,护江堤白蹋晴沙";
-                            break;
-                    }
+                    posdesc = "东风渐绿西湖柳，雁已还人未南归";
                     break;
                 case "河南省":
                     switch (ipLocation.data.city) {
                         case "郑州市":
                             posdesc = "豫州之域，天地之中";
-                            break;
-                        case "信阳市":
-                            posdesc = "品信阳毛尖，悟人间芳华";
                             break;
                         case "南阳市":
                             posdesc = "臣本布衣，躬耕于南阳此南阳非彼南阳！";
@@ -243,7 +218,7 @@ function showWelcome() {
             break;
     }
 
-    // 根据本地时间切换欢迎语
+    //根据本地时间切换欢迎语
     let timeChange;
     let date = new Date();
     if (date.getHours() >= 5 && date.getHours() < 11) timeChange = "<span>🌤️ 早上好，一日之计在于晨</span>";
@@ -253,32 +228,27 @@ function showWelcome() {
     else if (date.getHours() >= 19 && date.getHours() < 24) timeChange = "<span>🌙 晚上好，夜生活嗨起来！</span>";
     else timeChange = "夜深了，早点休息，少熬夜";
 
-    let welcomeInfoElement = document.getElementById("welcome-info");
-
-    if (welcomeInfoElement) {
-        welcomeInfoElement.innerHTML =
-            `欢迎来自 <b><span style="color: var(--anzhiyu-main)">${pos}</span></b> 的友友💖<br>当前位置距博主约 <b><span style="color: var(--anzhiyu-main)">${dist.toFixed(2)}</span></b> 公里！<br>${timeChange}<br>Tip：<b><span style="font-size: 15px;">${posdesc}</span></b>`;
-    } else {
-        console.log("Pjax无法获取元素");
+    // 新增ipv6显示为指定内容
+    if (ip.includes(":")) {
+        ip = "<br>好复杂，看不懂呀";
+    }
+    try {
+        //自定义文本和需要放的位置
+        document.getElementById("welcome-info").innerHTML =
+            `欢迎来自 <b><span style="color: var(--kouseki-ip-color);font-size: var(--kouseki-gl-size)">${pos}</span></b> 的友友💖<br>${posdesc}🍂<br>当前位置距博主约 <b><span style="color: var(--kouseki-ip-color)">${dist}</span></b> 公里！<br>${timeChange} <br>`;
+    } catch (err) {
+        // console.log("Pjax无法获取元素");
     }
 }
 
 // Pjax完成页面切换的事件回调处理
 function handlePjaxComplete() {
-    if (isHomePage()) {
-        showWelcome();
-    }
+    showWelcome();
 }
 
-function isHomePage() {
-    return window.location.pathname === '/' || window.location.pathname === '/index.html';
-}
+window.onload = function() {
+    showWelcome();
 
-
-// 添加pjax:complete事件监听
-window.onload = function () {
-    if (isHomePage()) {
-        showWelcome();
-    }
+    // 添加pjax:complete事件监听
     document.addEventListener("pjax:complete", handlePjaxComplete);
 };
