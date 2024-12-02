@@ -1,5 +1,4 @@
-// 进行 fetch 请求
-fetch('https://api.nsmao.net/api/ip/query?key=yP1U9KfDPW5EtKwYQPv95qqD81') // 申请地址：https://api.nsmao.net
+fetch('https://api.nsmao.net/api/ip/query?key=yP1U9KfDPW5EtKwYQPv95qqD81')
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -41,12 +40,10 @@ function showWelcome() {
     let ip = ipLocation.ip;
     let posdesc;
 
-    // 新增ipv6显示为指定内容
     if (ip.includes(":")) {
         ip = "<br>好复杂，咱看不懂~(ipv6)";
     }
     
-    // 以下的代码需要根据新API返回的结果进行相应的调整
     switch (ipLocation.data.country) {
         case "日本":
             posdesc = "よろしく，一起去看樱花吗";
@@ -243,7 +240,6 @@ function showWelcome() {
             break;
     }
 
-    // 根据本地时间切换欢迎语
     let timeChange;
     let date = new Date();
     if (date.getHours() >= 5 && date.getHours() < 11) timeChange = "<span>🌤️ 早上好，一日之计在于晨</span>";
@@ -263,7 +259,6 @@ function showWelcome() {
     }
 }
 
-// Pjax完成页面切换的事件回调处理
 function handlePjaxComplete() {
     if (isHomePage()) {
         showWelcome();
@@ -274,8 +269,6 @@ function isHomePage() {
     return window.location.pathname === '/' || window.location.pathname === '/index.html';
 }
 
-
-// 添加pjax:complete事件监听
 window.onload = function () {
     if (isHomePage()) {
         showWelcome();
